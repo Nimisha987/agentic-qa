@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic QA Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0A0C;
+    --bg-elevated: #131316;
+    --card: #17171B;
+    --card-hover: #1C1C21;
+    --border: #26262C;
+    --border-soft: #1E1E23;
+    --text: #ECECEE;
+    --text-dim: #8B8B93;
+    --text-faint: #55555C;
+    --accent: #6E6AF6;
+    --accent-soft: #6E6AF61A;
+    --accent-glow: #6E6AF633;
+    --green: #3DDC84;
+    --green-soft: #3DDC841A;
+    --red: #F2555A;
+    --red-soft: #F2555A1A;
+    --amber: #F5A623;
+    --amber-soft: #F5A6231A;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(ellipse 800px 500px at 50% -10%, var(--accent-glow), transparent),
+      var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .shell { max-width: 760px; margin: 0 auto; padding: 0 24px 100px; }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 0;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .brand .mark {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, var(--accent), #9C6AF6);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .pill {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: var(--text-dim);
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+  .pill .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--text-faint); }
+  .pill.live .pulse {
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    animation: blink 1.3s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  .hero { padding: 48px 0 36px; }
+  .hero h1 {
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.12;
+    margin: 0 0 14px;
+    background: linear-gradient(180deg, #FFFFFF, #C7C7D1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero p { font-size: 15px; line-height: 1.65; color: var(--text-dim); max-width: 46ch; margin: 0; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 20px 40px -20px rgba(0,0,0,0.5);
+  }
+
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 500; color: var(--text-dim); margin-bottom: 8px;
+  }
+  .field label svg { opacity: 0.7; }
+
+  input, textarea, select {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 9px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  textarea { resize: vertical; line-height: 1.6; }
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  input::placeholder, textarea::placeholder { color: var(--text-faint); }
+
+  button {
+    width: 100%;
+    margin-top: 6px;
+    padding: 13px 20px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.15) inset, 0 8px 20px -8px var(--accent-glow);
+    transition: transform .1s ease, background .15s ease;
+  }
+  button:hover:not(:disabled) { background: #7C78FF; }
+  button:active:not(:disabled) { transform: scale(0.99); }
+  button:disabled {
+    background: var(--bg-elevated);
+    color: var(--text-faint);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  .secondary-btn {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 13px;
+    padding: 10px;
+    margin-bottom: 14px;
+    box-shadow: none;
+  }
+  .secondary-btn:hover:not(:disabled) { background: var(--card-hover); color: var(--text); }
+
+  .suggestion-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid #6E6AF640;
+    border-radius: 8px;
+    font-size: 12.5px;
+    cursor: pointer;
+    margin: 0 6px 6px 0;
+    transition: background .15s ease;
+  }
+  .suggestion-chip:hover { background: #6E6AF633; }
+
+  #output { margin-top: 32px; }
+
+  .verdict {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 20px;
+    border-radius: 14px;
+    margin-bottom: 28px;
+    border: 1px solid;
+  }
+  .verdict.pass { background: var(--green-soft); border-color: #3DDC8440; }
+  .verdict.fail { background: var(--red-soft); border-color: #F2555A40; }
+  .verdict-icon {
+    width: 32px; height: 32px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .verdict.pass .verdict-icon { background: #3DDC8430; }
+  .verdict.fail .verdict-icon { background: #F2555A30; }
+  .verdict-title { font-size: 15px; font-weight: 600; margin: 0 0 4px; }
+  .verdict.pass .verdict-title { color: var(--green); }
+  .verdict.fail .verdict-title { color: var(--red); }
+  .verdict-reason { font-size: 13px; line-height: 1.6; color: var(--text-dim); margin: 0; }
+
+  .impact-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600; padding: 5px 10px; border-radius: 6px; margin-top: 10px;
+  }
+  .impact-badge.high { background: var(--red-soft); color: var(--red); }
+  .impact-badge.medium { background: var(--amber-soft); color: var(--amber); }
+  .impact-badge.low { background: var(--green-soft); color: var(--green); }
+
+  .log-title {
+    font-size: 12px; font-weight: 600; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 16px; padding-left: 2px;
+  }
+
+  .step { display: flex; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--border-soft); }
+  .step:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .step-rail { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 24px; }
+  .step-dot {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--card); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-dim); flex-shrink: 0;
+  }
+  .step-line { width: 1px; flex: 1; background: var(--border-soft); margin-top: 4px; }
+
+  .step-body { flex: 1; min-width: 0; padding-bottom: 4px; }
+  .step-action {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--accent); background: var(--accent-soft); padding: 4px 9px;
+    border-radius: 6px; margin-bottom: 10px;
+  }
+  .step-thought { font-size: 13.5px; line-height: 1.65; color: var(--text-dim); margin: 0 0 14px; }
+  .step img { width: 100%; display: block; border-radius: 10px; border: 1px solid var(--border); }
+
+  .empty-state {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    padding: 64px 24px; color: var(--text-faint); font-size: 13px;
+    border: 1px dashed var(--border); border-radius: 14px;
+  }
+
+  .health-meter {
+    text-align: center; padding: 28px; border-radius: 14px; margin-bottom: 24px;
+    border: 1px solid var(--border); background: var(--card);
+  }
+  .health-meter .score { font-size: 48px; font-weight: 800; line-height: 1; }
+  .health-meter .label { font-size: 12px; color: var(--text-dim); margin-top: 6px; }
+
+  .batch-summary { display: flex; gap: 10px; margin-bottom: 24px; }
+  .batch-summary .chip {
+    flex: 1; text-align: center; padding: 14px; border-radius: 10px;
+    font-size: 13px; border: 1px solid var(--border); background: var(--card);
+  }
+  .batch-summary .chip .num { font-size: 22px; font-weight: 700; display: block; margin-bottom: 2px; }
+  .batch-run { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+  .batch-run-header {
+    display: flex; align-items: center; gap: 10px; padding: 14px 16px;
+    background: var(--card); cursor: pointer;
+  }
+  .batch-run-header .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .batch-run-header .dot.pass { background: var(--green); }
+  .batch-run-header .dot.fail { background: var(--red); }
+  .batch-run-header .dot.pending {
+    background: var(--amber); box-shadow: 0 0 6px var(--amber);
+    animation: blink 1.3s ease-in-out infinite;
+  }
+  .batch-run-header .req-text { flex: 1; font-size: 13px; }
+  .batch-run-header .status-text { font-size: 11px; color: var(--text-dim); }
+  .batch-run-body { padding: 4px 16px 16px; display: none; }
+  .batch-run-body.open { display: block; }
+
+  .history-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 16px; background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; margin-bottom: 8px; cursor: pointer; transition: background .15s ease;
+  }
+  .history-item:hover { background: var(--card-hover); }
+  .history-item .h-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .history-item .h-status { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .history-item .h-status.pass { background: var(--green); }
+  .history-item .h-status.fail { background: var(--red); }
+  .history-item .h-text { min-width: 0; }
+  .history-item .h-req {
+    font-size: 13px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .history-item .h-url { font-size: 11px; color: var(--text-faint); }
+  .history-item .h-time { font-size: 11px; color: var(--text-faint); flex-shrink: 0; margin-left: 12px; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <div class="nav">
+    <div class="brand">
+      <span class="mark">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      Agentic QA Engineer
+    </div>
+    <div class="pill" id="statusPill">
+      <span class="pulse"></span>
+      <span id="statusText">Idle</span>
+    </div>
+  </div>
+
+  <div class="hero">
+    <h1>Test it without<br>writing a test.</h1>
+    <p>Describe what should happen in plain English. The agent reasons over live screenshots, drives a real browser, and reports back with evidence for every step.</p>
+  </div>
+
+  <div class="card">
+    <div class="field">
+      <label>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Target URL
+      </label>
+      <input id="url" placeholder="https://example.com" value="https://www.saucedemo.com">
+    </div>
+
+    <button type="button" id="suggestBtn" class="secondary-btn" onclick="suggestTests()">
+      ✨ Suggest tests for this site
+    </button>
+    <div id="suggestions" style="margin-bottom:14px;"></div>
+
+    <div class="field">
+      <label>Mode</label>
+      <select id="testMode" onchange="onModeChange()">
+        <option value="single">Single test</option>
+        <option value="batch">Batch — multiple requirements</option>
+        <option value="checklist">Coverage checklist — site health score</option>
+      </select>
+    </div>
+
+    <div class="field" id="singleField">
+      <label>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        Requirement
+      </label>
+      <input id="requirement" placeholder="log in and add an item to the cart">
+    </div>
+
+    <div class="field" id="batchField" style="display:none;">
+      <label>Requirements (one per line)</label>
+      <textarea id="requirementsBatch" rows="4" placeholder="log in with standard_user and secret_sauce
+add a backpack to the cart
+open the menu and go to the About page"></textarea>
+    </div>
+
+    <div class="field" id="checklistField" style="display:none;">
+      <label>Site type</label>
+      <select id="checklistType">
+        <option value="ecommerce">E-commerce</option>
+        <option value="auth">Login / Auth</option>
+        <option value="saas">SaaS Dashboard</option>
+        <option value="content">Blog / Content site</option>
+      </select>
+    </div>
+
+    <button id="runBtn" onclick="runTest()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Run test
+    </button>
+  </div>
+
+  <div id="output">
+    <div class="empty-state">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6v6H9z"/></svg>
+      No runs yet — results will appear here
+    </div>
+  </div>
+
+  <div id="historySection" style="margin-top: 40px;">
+    <div class="log-title">Past runs</div>
+    <div id="historyList"></div>
+  </div>
+
+</div>
+
+<script>
+const checkIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`;
+const xIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+
+function onModeChange() {
+  const mode = document.getElementById('testMode').value;
+  document.getElementById('singleField').style.display = mode === 'single' ? 'block' : 'none';
+  document.getElementById('batchField').style.display = mode === 'batch' ? 'block' : 'none';
+  document.getElementById('checklistField').style.display = mode === 'checklist' ? 'block' : 'none';
+}
+
+async function suggestTests() {
+  const url = document.getElementById('url').value;
+  const btn = document.getElementById('suggestBtn');
+  const container = document.getElementById('suggestions');
+
+  if (!url) { alert('URL daalo pehle'); return; }
+
+  btn.disabled = true;
+  btn.innerText = 'Analyzing page…';
+  container.innerHTML = '';
+
+  try {
+    const res = await fetch('/suggest', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({url})
+    });
+    const data = await res.json();
+
+    if (data.suggestions && data.suggestions.length) {
+      container.innerHTML = data.suggestions.map(s =>
+        `<span class="suggestion-chip" onclick="useSuggestion('${s.replace(/'/g, "\\'")}')">+ ${s}</span>`
+      ).join('');
+    } else {
+      container.innerHTML = '<span style="font-size:12px;color:var(--text-faint);">Koi suggestion nahi mila</span>';
+    }
+  } catch (e) {
+    container.innerHTML = '<span style="font-size:12px;color:var(--red);">Failed to load suggestions</span>';
+  }
+
+  btn.disabled = false;
+  btn.innerText = '✨ Suggest tests for this site';
+}
+
+function useSuggestion(text) {
+  const mode = document.getElementById('testMode').value;
+  if (mode === 'batch') {
+    const textarea = document.getElementById('requirementsBatch');
+    textarea.value = textarea.value.trim() ? textarea.value.trim() + '\n' + text : text;
+  } else {
+    document.getElementById('requirement').value = text;
+  }
+}
+
+async function runTest() {
+  const url = document.getElementById('url').value;
+  const mode = document.getElementById('testMode').value;
+  const btn = document.getElementById('runBtn');
+  const output = document.getElementById('output');
+  const pill = document.getElementById('statusPill');
+  const statusText = document.getElementById('statusText');
+
+  if (!url) { alert('Fill in the URL'); return; }
+
+  btn.disabled = true;
+  btn.innerHTML = 'Running…';
+  pill.classList.add('live');
+  statusText.innerText = 'Running';
+  output.innerHTML = '';
+
+  if (mode === 'checklist') {
+    const checklist_type = document.getElementById('checklistType').value;
+    await fetch('/run_checklist', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({url, checklist_type})
+    });
+  } else if (mode === 'batch') {
+    const requirements = document.getElementById('requirementsBatch').value;
+    if (!requirements.trim()) { alert('Add at least one requirement'); btn.disabled = false; btn.innerHTML='Run test'; return; }
+    await fetch('/run_batch', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({url, requirements})
+    });
+  } else {
+    const requirement = document.getElementById('requirement').value;
+    if (!requirement) { alert('Fill in the requirement'); btn.disabled = false; btn.innerHTML='Run test'; return; }
+    await fetch('/run', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({url, requirement})
+    });
+  }
+
+  poll();
+}
+
+async function poll() {
+  const res = await fetch('/status');
+  const data = await res.json();
+  render(data);
+
+  if (data.running) {
+    setTimeout(poll, 2000);
+  } else {
+    const btn = document.getElementById('runBtn');
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg> Run test';
+    document.getElementById('statusPill').classList.remove('live');
+    document.getElementById('statusText').innerText = 'Idle';
+    loadHistory();
+  }
+}
+
+function toggleRun(idx) {
+  document.getElementById('run-body-' + idx).classList.toggle('open');
+}
+
+function render(data) {
+  const output = document.getElementById('output');
+  let html = '';
+
+  if (data.batch) {
+    let healthHtml = '';
+    if (data.checklist && data.health_score !== null && data.health_score !== undefined) {
+      const scoreColor = data.health_score >= 70 ? 'var(--green)' : data.health_score >= 40 ? 'var(--amber)' : 'var(--red)';
+      healthHtml = `<div class="health-meter">
+        <div class="score" style="color:${scoreColor}">${data.health_score}%</div>
+        <div class="label">SITE HEALTH SCORE</div>
+      </div>`;
+    }
+    html += healthHtml;
+
+    const total = data.runs.length;
+    const passed = data.runs.filter(r => r.result && r.result.status === 'PASS').length;
+    const failed = data.runs.filter(r => r.result && r.result.status === 'FAIL').length;
+    const pending = total - passed - failed;
+
+    html += `
+      <div class="batch-summary">
+        <div class="chip"><span class="num">${total}</span>Total</div>
+        <div class="chip" style="color:var(--green)"><span class="num">${passed}</span>Passed</div>
+        <div class="chip" style="color:var(--red)"><span class="num">${failed}</span>Failed</div>
+        <div class="chip"><span class="num">${pending}</span>Running</div>
+      </div>
+    `;
+
+    data.runs.forEach((run, idx) => {
+      const status = run.result ? run.result.status : null;
+      const dotCls = status === 'PASS' ? 'pass' : status === 'FAIL' ? 'fail' : 'pending';
+      const statusLabel = status || 'Running…';
+
+      html += `<div class="batch-run">
+        <div class="batch-run-header" onclick="toggleRun(${idx})">
+          <span class="dot ${dotCls}"></span>
+          <span class="req-text">${run.requirement}</span>
+          <span class="status-text">${statusLabel}</span>
+        </div>
+        <div class="batch-run-body" id="run-body-${idx}">`;
+
+      if (run.result) {
+        html += `<p class="step-thought" style="margin-top:12px;">${run.result.reason || ''}</p>`;
+      }
+      (run.steps || []).forEach(step => {
+        html += `
+          <div class="step">
+            <div class="step-rail"><div class="step-dot">${step.step}</div></div>
+            <div class="step-body">
+              <span class="step-action">${step.action}${step.selector ? ' → ' + step.selector : ''}</span>
+              <p class="step-thought">${step.thought || ''}</p>
+              <img src="/evidence/${step.screenshot}">
+            </div>
+          </div>
+        `;
+      });
+
+      html += `</div></div>`;
+    });
+
+    output.innerHTML = html;
+    return;
+  }
+
+  if (data.result) {
+    const isPass = data.result.status === 'PASS';
+    const cls = isPass ? 'pass' : 'fail';
+    const iconColor = isPass ? 'var(--green)' : 'var(--red)';
+
+    let impactHtml = '';
+    if (data.result.impact_score > 0) {
+      const score = data.result.impact_score;
+      const level = score >= 7 ? 'high' : score >= 4 ? 'medium' : 'low';
+      impactHtml = `<div class="impact-badge ${level}">IMPACT ${score}/10 — ${data.result.impact_label}</div>`;
+    }
+
+    let recordingHtml = '';
+    if (data.session_id) {
+      recordingHtml = `<a href="https://console.getsolari.com/sessions" target="_blank" style="display:block;margin-top:10px;font-size:12px;color:var(--accent);text-decoration:none;">▶ View this session's recording in Solari console →</a>`;
+    }
+
+    let downloadHtml = '';
+    if (data.run_id) {
+      downloadHtml = `<a href="/export/${data.run_id}" style="display:block;margin-top:6px;font-size:12px;color:var(--text-dim);text-decoration:none;">⬇ Download PDF report</a>`;
+    }
+        let summaryHtml = '';
+    if (data.summary) {
+      summaryHtml = `<p style="font-size:12.5px;color:var(--text-faint);font-style:italic;margin-top:14px;padding-top:12px;border-top:1px solid var(--border-soft);">"${data.summary}"</p>`;
+    }
+
+    html += `
+      <div class="verdict ${cls}">
+        <div class="verdict-icon" style="color:${iconColor}">${isPass ? checkIcon : xIcon}</div>
+        <div>
+          <p class="verdict-title">${isPass ? 'Test passed' : 'Test failed'}</p>
+          <p class="verdict-reason">${data.result.reason}</p>
+          ${impactHtml}
+          ${recordingHtml}
+          ${downloadHtml}
+          ${summaryHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  if (data.steps && data.steps.length) {
+    html += '<div class="log-title">Execution log</div>';
+    data.steps.forEach((step, i) => {
+      const isLast = i === data.steps.length - 1;
+      html += `
+        <div class="step">
+          <div class="step-rail">
+            <div class="step-dot">${step.step}</div>
+            ${isLast ? '' : '<div class="step-line"></div>'}
+          </div>
+          <div class="step-body">
+            <span class="step-action">${step.action}${step.selector ? ' → ' + step.selector : ''}</span>
+            <p class="step-thought">${step.thought || ''}</p>
+            <img src="/evidence/${step.screenshot}">
+          </div>
+        </div>
+      `;
+    });
+  } else if (!data.result) {
+    html += `
+      <div class="empty-state">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6v6H9z"/></svg>
+        No runs yet — results will appear here
+      </div>
+    `;
+  }
+
+  output.innerHTML = html;
+}
+
+async function loadHistory() {
+  const res = await fetch('/history');
+  const runs = await res.json();
+  const list = document.getElementById('historyList');
+
+  if (!runs.length) {
+    list.innerHTML = '<div class="empty-state" style="padding:32px;">No past runs yet</div>';
+    return;
+  }
+
+  list.innerHTML = runs.map(run => {
+    const status = run.result ? run.result.status : 'IN PROGRESS';
+    const cls = status === 'PASS' ? 'pass' : 'fail';
+    const time = run.timestamp ? new Date(run.timestamp).toLocaleString() : '';
+    return `
+      <div class="history-item" onclick="loadRun('${run.run_id}')">
+        <div class="h-left">
+          <span class="h-status ${cls}"></span>
+          <div class="h-text">
+            <div class="h-req">${run.requirement}</div>
+            <div class="h-url">${run.url}</div>
+          </div>
+        </div>
+        <div class="h-time">${time}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function loadRun(runId) {
+  const res = await fetch('/history');
+  const runs = await res.json();
+  const run = runs.find(r => r.run_id === runId);
+  if (run) {
+    render(run);
+    window.scrollTo({ top: document.getElementById('output').offsetTop - 40, behavior: 'smooth' });
+  }
+}
+
+loadHistory();
+</script>
+
+</body>
+</html>
